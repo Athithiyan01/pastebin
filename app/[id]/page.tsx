@@ -11,21 +11,20 @@ interface PasteData {
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 async function getPaste(id: string): Promise<PasteData | null> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3004"}/api/paste/${id}`,
-    { cache: "no-store" }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/paste/${id}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) return null;
   return res.json();
 }
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { id } = params;
   const paste = await getPaste(id);
 
   if (!paste) {
