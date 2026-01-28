@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📋 Pastebin Clone - Complete Project
 
 A full-stack Pastebin-like web application built with Next.js, TypeScript, PostgreSQL, and Tailwind CSS.
@@ -257,3 +258,6 @@ npm run dev
 ```
 
 Good luck! 🎉
+=======
+# pastebin
+>>>>>>> b4e11bf073fdb9534ddeeff7b29d0d0be42d2b15

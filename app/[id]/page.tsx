@@ -10,22 +10,23 @@ interface PasteData {
   max_views: number | null;
 }
 
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
 async function getPaste(id: string): Promise<PasteData | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3004"}/api/paste/${id}`,
-    { cache: "no-store" } // always fetch fresh
+    { cache: "no-store" }
   );
 
   if (!res.ok) return null;
   return res.json();
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const paste = await getPaste(params.id);
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+  const paste = await getPaste(id);
 
   if (!paste) {
     return (
@@ -53,10 +54,7 @@ export default async function Page({
           {paste.content}
         </pre>
 
-        <Link
-          href="/"
-          className="inline-block mt-6 text-indigo-600 font-medium"
-        >
+        <Link href="/" className="inline-block mt-6 text-indigo-600 font-medium">
           ← Create New Paste
         </Link>
       </div>
