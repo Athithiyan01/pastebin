@@ -1,25 +1,27 @@
 // app/[id]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { headers } from "next/headers";
 
 interface PasteData {
   id: string;
   content: string;
-  created_at: string;
+  createdAt: string;
 }
 
-interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
+export default async function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const host = headers().get("host");
+  const protocol =
+    process.env.NODE_ENV === "development" ? "http" : "https";
 
-export default async function Page({ params }: PageProps) {
-  const { id } = await params;
-
-  const res = await fetch(`/api/paste/${id}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${protocol}://${host}/api/paste/${params.id}`,
+    { cache: "no-store" }
+  );
 
   if (!res.ok) {
     notFound();
@@ -33,7 +35,7 @@ export default async function Page({ params }: PageProps) {
         <h1 className="text-xl font-bold mb-4">Paste: {paste.id}</h1>
 
         <p className="text-sm text-gray-500 mb-2">
-          Created: {new Date(paste.created_at).toLocaleString()}
+          Created: {new Date(paste.createdAt).toLocaleString()}
         </p>
 
         <pre className="bg-gray-100 p-4 rounded whitespace-pre-wrap break-words">
