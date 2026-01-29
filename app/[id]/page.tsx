@@ -15,7 +15,8 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const host = headers().get("host");
+  const headersList = await headers();
+  const host = headersList.get("host");
   const protocol =
     process.env.NODE_ENV === "development" ? "http" : "https";
 
