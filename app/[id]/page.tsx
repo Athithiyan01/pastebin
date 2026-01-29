@@ -12,14 +12,15 @@ interface PasteData {
 export default async function Page({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const host = headers().get("host");
   const protocol =
     process.env.NODE_ENV === "development" ? "http" : "https";
 
   const res = await fetch(
-    `${protocol}://${host}/api/paste/${params.id}`,
+    `${protocol}://${host}/api/paste/${id}`,
     { cache: "no-store" }
   );
 
@@ -32,7 +33,7 @@ export default async function Page({
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-xl font-bold mb-4">Paste: {paste.id}</h1>
+        <h1 className="text-xl font-bold mb-4">Paste: {id}</h1>
 
         <p className="text-sm text-gray-500 mb-2">
           Created: {new Date(paste.createdAt).toLocaleString()}
