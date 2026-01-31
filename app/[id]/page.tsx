@@ -1,4 +1,3 @@
-// app/[id]/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -26,7 +25,14 @@ export default function ViewPaste() {
   useEffect(() => {
     const fetchPaste = async () => {
       try {
-        const response = await fetch(`/api/paste/${params.id}`);
+        // Get the id from params - it could be string or string[]
+        const id = Array.isArray(params.id) ? params.id[0] : params.id;
+        
+        if (!id) {
+          throw new Error('Paste ID is missing');
+        }
+
+        const response = await fetch(`/api/paste/${id}`);
         
         if (!response.ok) {
           const data = await response.json();
